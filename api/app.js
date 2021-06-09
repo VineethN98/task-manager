@@ -67,6 +67,66 @@ app.delete("/lists/:id", (req, res) => {
   });
 });
 
+/**
+ * GET /lists/:listId/tasks
+ * Purpose: Get all tasks in a list
+ */
+app.get("/lists/:listId/tasks", (req, res) => {
+  // Tasks in a list
+  Task.find({
+    _listId: req.params.listId,
+  }).then((tasks) => {
+    res.send(tasks);
+  });
+});
+
+/**
+ * POST /lists/:listId/tasks
+ * Purpose: Create a new task in the specified list
+ */
+app.post("/lists/:listId/tasks", (req, res) => {
+  // Create a new task in the specified list
+  let newTask = new Task({
+    title: req.body.title,
+    _listId: req.params.listId,
+  });
+  newTask.save().then((newTaskDoc) => {
+    res.send(newTaskDoc);
+  });
+});
+
+/**
+ * PATCH /lists/:listId/tasks/:taskId
+ * Purpose: Update a task in the specified list
+ */
+app.patch("/lists/:listId/tasks/:taskId", (req, res) => {
+  // Update a task in the specified list
+  Task.findOneAndUpdate(
+    {
+      _id: req.params.taskId,
+      _listId: req.params.listId,
+    },
+    {
+      $set: req.body,
+    }
+  ).then(() => {
+    res.sendStatus(200);
+  });
+});
+
+/**
+ * DELETE /lists/:listId/tasks/:taskId
+ * Purpose: Delete a task in the specified list
+ */
+app.delete("/lists/:listId/tasks/:taskId", (req, res) => {
+  Task.findOneAndRemove({
+    _id: req.params.taskId,
+    _listId: req.params.listId,
+  }).then((removedTaskDoc) => {
+    res.send(removedTaskDoc);
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server listening on PORT 3000");
 });
