@@ -1,6 +1,8 @@
 # Task-Manager Web Application
 A web app to manage your everyday tasks efficiently. This web app is created using the MEAN stack.
 
+![](TaskManager.PNG)
+
 ## Installation
 
 1. Node should be installed to run this project
